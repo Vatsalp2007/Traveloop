@@ -1,16 +1,74 @@
-# React + Vite
+# Traveloop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A travel planning web app for Indian users with budget management, notes system, and shareable itineraries.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Trip Planning** — Create trips with multiple stops, add activities per stop
+- **Budget Management** — Track costs by city/category, mark expenses as paid, set budget limits
+- **Notes System** — Add notes to any trip stop, search/filter/sort across all notes
+- **Itinerary Views** — List and calendar views for trip itinerary
+- **Invoice** — Generate and print trip expense invoices
+- **Admin Panel** — Manage countries, cities, and activities data
+- **Authentication** — Email/password and Google sign-in via Firebase Auth
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React (Vite)
+- Tailwind CSS
+- Firebase (Auth, Firestore, Storage)
+- React Router
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Admin Access
+
+Click **Admin Login** on the login page (top-right corner).
+
+- Email: `panchasarav2007@gmail.com`
+- Password: `Vatsal@2007`
+
+## Project Structure
+
+```
+src/
+  pages/        — Page components (Login, Dashboard, Trips, Budget, etc.)
+  components/   — Reusable UI components
+  hooks/        — Custom React hooks (useAuth, useTrip, useStops)
+  firebase/     — Firebase config, auth, firestore utilities, data service
+  data/         — Static seed data (countries, cities, activities)
+  context/      — React context providers (AuthContext)
+```
+
+## Data Flow
+
+Admin CRUD changes are stored in localStorage and synced across pages. Static seed data is used as fallback when Firebase Firestore is unavailable.
+
+## Routes
+
+| Path | Component | Description |
+|------|-----------|-------------|
+| `/login` | LoginPage | Sign in page |
+| `/signup` | SignupPage | Create account |
+| `/` | DashboardPage | Home dashboard |
+| `/trips` | MyTripsPage | Your trips list |
+| `/trips/new` | CreateTripPage | New trip form |
+| `/trips/:id` | ItineraryViewPage | Trip itinerary |
+| `/trips/:id/edit` | ItineraryBuilderPage | Edit trip stops/activities |
+| `/trips/:id/budget` | BudgetPage | Per-trip budget |
+| `/trips/:id/notes` | NotesPage | Trip notes |
+| `/trips/:id/invoice` | ExpenseInvoicePage | Trip invoice |
+| `/my-budget` | MyBudgetPage | All trips budget overview |
+| `/admin` | AdminPage | Data management panel |
+| `/trip/:id` | PublicItineraryPage | Shared trip view |
