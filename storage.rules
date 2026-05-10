@@ -1,0 +1,26 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // User profile photos
+    match /users/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth.uid == userId
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.startsWith('image/');
+    }
+
+    // Trip cover photos
+    match /trips/{tripId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth.uid == 
+        firestore.get(/databases/(default)/documents/trips/$(tripId)).data.userId
+                   && request.resource.size < 10 * 1024 * 1024
+                   && request.resource.contentType.startsWith('image/');
+    }
+
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

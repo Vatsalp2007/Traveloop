@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users: can only read/write their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth.uid == userId;
+    }
+
+    // Trips: owner full access, public trips readable by anyone
+    match /trips/{tripId} {
+      allow read: if resource.data.isPublic == true
+                  || request.auth.uid == resource.data.userId;
+      allow create: if request.auth.uid == request.resource.data.userId;
+      allow update: if request.auth.uid == resource.data.userId;
+      allow delete: if request.auth.uid == resource.data.userId;
+
+      // Sub-collections: stops, activities, notes, checklist
+      match /stops/{stopId} {
+        allow read: if get(/databases/$(database)/documents/trips/$(tripId)).data.isPublic == true
+                    || request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow create: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow update: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow delete: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+
+        match /activities/{activityId} {
+          allow read: if get(/databases/$(database)/documents/trips/$(tripId)).data.isPublic == true
+                      || request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+          allow create: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+          allow update: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+          allow delete: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        }
+      }
+
+      match /notes/{noteId} {
+        allow read: if get(/databases/$(database)/documents/trips/$(tripId)).data.isPublic == true
+                    || request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow create: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow update: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow delete: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+      }
+
+      match /checklist/{itemId} {
+        allow read: if get(/databases/$(database)/documents/trips/$(tripId)).data.isPublic == true
+                    || request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow create: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow update: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+        allow delete: if request.auth.uid == get(/databases/$(database)/documents/trips/$(tripId)).data.userId;
+      }
+    }
+
+    // Cities: anyone can read (global catalog), only admin writes
+    match /cities/{cityId} {
+      allow read: if true;
+      allow write: if request.auth.token.admin == true;
+    }
+
+    // Activities: anyone can read (global catalog), only admin writes
+    match /activities/{activityId} {
+      allow read: if true;
+      allow write: if request.auth.token.admin == true;
+    }
+
+    // Stats: admin only
+    match /stats/{statId} {
+      allow read: if request.auth.token.admin == true;
+      allow write: if request.auth.token.admin == true;
+    }
+  }
+}

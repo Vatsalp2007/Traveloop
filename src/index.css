@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00327d;
+  --color-primary-dark: #002a66;
+  --color-primary-container: #0047ab;
+  --color-secondary: #904d00;
+  --color-secondary-container: #fd8b00;
+  --color-success: #27AE60;
+  --color-danger: #E74C3C;
+  --color-bg: #f8f9fa;
+  --color-card: #FFFFFF;
+  --color-surface-container-low: #f3f4f5;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-surface: #191c1d;
+  --color-on-surface-variant: #434653;
+  --color-outline: #737784;
+  --color-outline-variant: #c3c6d5;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-on-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+.hero-background {
+  background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBREVnCL3_Cbf-drQyL1O0yYGcaX_E_1SxImG8gey6L2TYhmQOVfLRGplTs1YQfsefIl9rIPaxmwFkg2PcfrhCNV-_aKOVvaKE9AAiS_JNZ8kH3HY5QkedcRORrVEqz9Fvq6fCJtME98JN5RkVJtIQo-oq7HpWuO8-y5pzgKSNhfovXKLcVEeI1A3nd0euaTWLt22nJA4nVNbMq-6xQ4o1dhS3CF5xYE9tGqZi1IulcGxqPkaC2iKT3LCRINVCnmO-W6xQDX4D5jhCJ);
+  background-size: cover;
+  background-position: center;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c3c6d5;
+  border-radius: 10px;
+}
